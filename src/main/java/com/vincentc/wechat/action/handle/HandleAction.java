@@ -36,11 +36,6 @@ public class HandleAction extends BaseAction {
 				e.printStackTrace();
 				return Action.INPUT;
 			}
-			
-			
-			
-			
-			
 			return ActionSupport.SUCCESS;
 		} else {
 			return Action.INPUT;
