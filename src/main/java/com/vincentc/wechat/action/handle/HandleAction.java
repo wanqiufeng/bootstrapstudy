@@ -1,18 +1,17 @@
 package com.vincentc.wechat.action.handle;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
-import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.vincentc.wechat.action.BaseAction;
+import com.vincentc.wechat.entity.GeneralMessage;
+import com.vincentc.wechat.entity.IncomeText;
+import com.vincentc.wechat.entity.SendText;
+import com.vincentc.wechat.utils.MessageUtils;
 
 public class HandleAction extends BaseAction {
 
@@ -27,41 +26,52 @@ public class HandleAction extends BaseAction {
 	private InputStream inputStream;
 
 	public String execute() {
-		if (isGetRequest() && siteConnect()) {
-			String echostr = this.getRequest().getParameter("echostr");
-			try {
-				inputStream = new ByteArrayInputStream(
-						echostr.getBytes("UTF-8"));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-				return Action.INPUT;
+		try {
+			if (isGetRequest()) {
+				siteConnect();
+			} else {
+				responseMsg();
 			}
 			return ActionSupport.SUCCESS;
-		} else {
-			return Action.INPUT;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ActionSupport.INPUT;
 		}
-
 	}
 
-	private boolean siteConnect() {
-		Map<String, String> map = this.getRequest().getParameterMap();
-		String timestamp = map.get("timestamp");
-		String nonce = map.get("nonce");
-		String signature = map.get("signature");
-		List<String> list = new ArrayList<String>();
-		list.add(TOKEN);
-		list.add(timestamp);
-		list.add(nonce);
-		Collections.sort(list);
-		return getEncodeStr(list).equals(signature);
+	private void responseMsg() throws IOException {
+		String msg = getMsg();
+		if (MessageUtils.getMsgType(msg).equals(GeneralMessage.MSG_TYPE_TEXT)) {
+			IncomeText text = MessageUtils.getIncomeMsg(msg, IncomeText.class);
+			inputStream = new ByteArrayInputStream(getSendMsg(text).getBytes(
+					"UTF-8"));
+		}
 	}
 
-	private String getEncodeStr(List<String> list) {
+	private String getSendMsg(IncomeText text) {
+		SendText sendText = new SendText();
+		sendText.setFromUserName(text.getToUserName());
+		sendText.setToUserName(text.getFromUserName());
+		sendText.setContent("hahahahxxxxx");
+		sendText.setCreateTime("324343434");
+		sendText.setMsgType(GeneralMessage.MSG_TYPE_TEXT);
+		return MessageUtils.getSendMsg(sendText);
+	}
+
+	private String getMsg() throws IOException {
+		BufferedReader reader = this.getRequest().getReader();
 		StringBuffer sb = new StringBuffer();
-		for (String s : list) {
-			sb.append(s);
+		String str = reader.readLine();
+		for (; null != str; str = reader.readLine()) {
+			sb.append(str);
 		}
-		return DigestUtils.shaHex(sb.toString());
+		reader.close();
+		return sb.toString();
+	}
+
+	private void siteConnect() throws UnsupportedEncodingException {
+		String echostr = this.getRequest().getParameter("echostr");
+		inputStream = new ByteArrayInputStream(echostr.getBytes("UTF-8"));
 	}
 
 	private boolean isGetRequest() {
