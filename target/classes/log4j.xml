@@ -3,22 +3,37 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="[%d{{yyyy-MM-dd HH:mm:ss,SSS\} %-5p] [%t] %c{2\} - %m%n" />
+			<param name="ConversionPattern"
+				value="[%d{{yyyy-MM-dd HH:mm:ss,SSS\} %-5p] [%t] %c{2\} - %m%n" />
 		</layout>
 	</appender>
-	<!-- <appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender"> 
-		<param name="File" value="huadu.log" /> <layout class="org.apache.log4j.PatternLayout"> 
-		<param name="ConversionPattern" value="[%d{{yyyy-MM-dd HH:mm:ss,SSS\} %-5p] 
-		[%t] %c{2\} - %m%n" /> </layout> </appender> -->
-	<logger name="org.hibernate.type" >
+	<!-- <appender name="DB" class="org.apache.log4j.jdbc.JDBCAppender"> <param 
+		name="url" value="jdbc:mysql://w.rdc.sae.sina.com.cn:3307/app_wechat1" /> 
+		<param name="driver" value="com.mysql.jdbc.Driver" /> <param name="user" 
+		value="y50xyxj2o5" /> <param name="password" value="y5z5yk0mi54kz24m1y25k1ixhxjw42j4kzmyzyx0" 
+		/> <param name="sql" value="INSERT INTO LOGS VALUES('%x', '%d','%C','%p','%m')" 
+		/> <layout class="org.apache.log4j.PatternLayout"> </layout> </appender> -->
+	<appender name="MAIL" class="org.apache.log4j.net.SMTPAppender">
+		<param name="BufferSize" value="512" />
+		<param name="SMTPHost" value="smtp.gmail.com" />
+		<param name="SMTPUsername" value="no-reply@girishgaurav.com" />
+		<param name="SMTPPassword" value="password" />
+		<param name="From" value="no-reply@girishgaurav.com" />
+		<param name="To" value="blog@girishgaurav.com" />
+		<param name="Subject" value="Error detected on server " />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d [%t] %-5p %c %x – %m%n" />
+		</layout>
+	</appender>
+	<logger name="org.hibernate.type">
 		<level value="error" />
 	</logger>
-	<logger name="com.synnex">
+	<logger name="com.vincentc">
 		<level value="error" />
 	</logger>
 	<root>
 		<level value="error" />
 		<appender-ref ref="STDOUT" />
-		<appender-ref ref="FILE" />
+		<appender-ref ref="MAIL" />
 	</root>
 </log4j:configuration>

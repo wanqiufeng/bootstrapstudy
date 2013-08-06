@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
+import org.apache.log4j.Logger;
+
 import com.opensymphony.xwork2.ActionSupport;
 import com.vincentc.wechat.action.BaseAction;
 import com.vincentc.wechat.entity.GeneralMessage;
@@ -25,6 +27,8 @@ public class HandleAction extends BaseAction {
 	private static final String TOKEN = "wanqiufeng";
 	private InputStream inputStream;
 
+	private static Logger logger = Logger.getLogger(HandleAction.class);
+
 	public String execute() {
 		try {
 			if (isGetRequest()) {
@@ -34,8 +38,8 @@ public class HandleAction extends BaseAction {
 			}
 			return ActionSupport.SUCCESS;
 		} catch (Exception e) {
-			e.printStackTrace();
-			return ActionSupport.INPUT;
+			logger.error(e, e);
+			return ActionSupport.ERROR;
 		}
 	}
 
