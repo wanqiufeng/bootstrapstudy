@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.log4j.Logger;
+import org.junit.Test;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.vincentc.wechat.action.BaseAction;
@@ -45,8 +46,10 @@ public class HandleAction extends BaseAction {
 
 	private void responseMsg() throws IOException {
 		String msg = getMsg();
+		logger.error("incomeMsg:" + msg);
 		if (MessageUtils.getMsgType(msg).equals(GeneralMessage.MSG_TYPE_TEXT)) {
 			IncomeText text = MessageUtils.getIncomeMsg(msg, IncomeText.class);
+			logger.error("sendMsg:" + getSendMsg(text));
 			inputStream = new ByteArrayInputStream(getSendMsg(text).getBytes(
 					"UTF-8"));
 		}

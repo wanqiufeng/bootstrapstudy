@@ -13,14 +13,15 @@
 		value="y50xyxj2o5" /> <param name="password" value="y5z5yk0mi54kz24m1y25k1ixhxjw42j4kzmyzyx0" 
 		/> <param name="sql" value="INSERT INTO LOGS VALUES('%x', '%d','%C','%p','%m')" 
 		/> <layout class="org.apache.log4j.PatternLayout"> </layout> </appender> -->
-	<appender name="MAIL" class="org.apache.log4j.net.SMTPAppender">
+	<appender name="MAIL"
+		class="com.vincentc.wechat.log4j.appender.GmailSMTPAppender">
 		<param name="BufferSize" value="512" />
 		<param name="SMTPHost" value="smtp.gmail.com" />
-		<param name="SMTPUsername" value="no-reply@girishgaurav.com" />
-		<param name="SMTPPassword" value="password" />
-		<param name="From" value="no-reply@girishgaurav.com" />
-		<param name="To" value="blog@girishgaurav.com" />
-		<param name="Subject" value="Error detected on server " />
+		<param name="SMTPUsername" value="191545224jun@gmail.com" />
+		<param name="SMTPPassword" value="5201314520" />
+		<param name="From" value="191545224jun@gmail.com" />
+		<param name="To" value="wanqiufeng@outlook.com" />
+		<param name="Subject" value="Error detected on SINAAPP " />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d [%t] %-5p %c %x – %m%n" />
 		</layout>

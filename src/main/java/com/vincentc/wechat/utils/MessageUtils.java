@@ -19,6 +19,8 @@ public class MessageUtils {
 	}
 
 	public static String getMsgType(String msg) {
-		return StringUtils.substringBetween(msg, "<MsgType>", "</MsgType>");
+		String cdataStr = StringUtils.substringBetween(msg, "<MsgType>",
+				"</MsgType>");
+		return StringUtils.substringBetween(cdataStr, "<![CDATA[", "]]>");
 	}
 }
