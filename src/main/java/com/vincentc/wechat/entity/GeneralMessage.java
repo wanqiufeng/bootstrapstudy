@@ -44,5 +44,4 @@ public class GeneralMessage {
 	public void setMsgType(String msgType) {
 		MsgType = msgType;
 	}
-
 }
